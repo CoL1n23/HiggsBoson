@@ -24,13 +24,18 @@ if __name__ == '__main__':
     samples_with_b = list(np.where(label == 'b')[0])
     label[samples_with_b] = -1.0
 
+    """
+    FORMING DIFFERENT DATASETS
+    """
     # Separate data to get training data and testing data
     training = data[:500, :]
     testing = data[500:, :]
 
     X = training[:, 1:31]
-    y = label[:500, 31]
+    y = label[:500]
     X_test = testing[:, 1:31]
-    y_test = label[500:, 31]
+    y_test = label[500:]
 
-    print(1)
+    # Preparing folds
+    positive_samples = list(np.where(y == 1)[0])
+    negative_samples = list(np.where(y == -1)[0])
