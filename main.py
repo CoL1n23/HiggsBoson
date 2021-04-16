@@ -38,9 +38,9 @@ def run():
     negative_samples = list(np.where(y == -1)[0])
 
     # Split data into three sets (40%, 30%, 30%)
-    train_samples = positive_samples[0:400] + negative_samples[0:400]
-    validation_samples = positive_samples[400:700] + negative_samples[400:700]
-    test_samples = positive_samples[700:] + negative_samples[700:]
+    train_samples = positive_samples[0:140] + negative_samples[0:260]
+    validation_samples = positive_samples[140:244] + negative_samples[260:456]
+    test_samples = positive_samples[244:] + negative_samples[456:]
 
     best_err = 1.5
     best_k = 0
@@ -54,6 +54,12 @@ def run():
             best_err = err
             best_k = k
     print "best_k=", best_k
+
+    alg = KNeighborsClassifier(n_neighbors=best_k, algorithm='brute')
+    alg.fit(X[train_samples], y[train_samples])
+    y_pred = alg.predict(X[test_samples])
+    err = np.mean(y[test_samples] != np.array([y_pred]).T)
+    print err
 
 
 if __name__ == '__main__':
