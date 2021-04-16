@@ -6,6 +6,12 @@
 
 The project is to solve the Higgs Boson Machine Learning Challenge (https://www.kaggle.com/c/higgs-boson).
 
+### Checklist
+- [x] Data preprocessing
+- [ ] Hyperparameter tuning
+- [ ] PCA
+- [ ] Generating figures
+
 Please contact us if you have any questions or comments about our project.
 - Lei Gong (gong148@purdue.edu)
 - Zhaorui Ma (ma448@purdue.edu)
