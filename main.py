@@ -19,13 +19,15 @@ def run():
     CLEANING DATA
     """
     # Extract label and convert the last column (label) to -1 and 1
-    label = data[:, d - 1]
-    label = np.array([label]).T
+    y = data[:, d - 1]
+    y = np.array([y]).T
 
-    samples_with_s = list(np.where(label == 's')[0])
-    label[samples_with_s] = 1.0
-    samples_with_b = list(np.where(label == 'b')[0])
-    label[samples_with_b] = -1.0
+    samples_with_s = list(np.where(y == 's')[0])
+    y[samples_with_s] = 1.0
+    samples_with_b = list(np.where(y == 'b')[0])
+    y[samples_with_b] = -1.0
+
+    X = data[:, 1:(d - 1)]
 
     """
     HYPERPARAMETER TUNING
@@ -34,11 +36,10 @@ def run():
     positive_samples = list(np.where(y == 1)[0])
     negative_samples = list(np.where(y == -1)[0])
 
-    # Form different datasets
-    X = data[:500, 1:31]
-    y = label[:500]
-    X_test = data[500:, 1:31]
-    y_test = label[500:]
+    # Split data into three sets
+    train_samples = positive_samples[0:400] + negative_samples[0:400]
+    validation_samples = positive_samples[400:700] + negative_samples[400:700]
+    test_samples = positive_samples[700:] + negative_samples[700:]
 
 
 if __name__ == '__main__':
