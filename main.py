@@ -53,7 +53,7 @@ def run():
     train_samples = positive_samples[:len(positive_samples)/2] + negative_samples[:len(negative_samples)/2]
     validation_samples = positive_samples[len(positive_samples)/2:] + negative_samples[len(negative_samples)/2:]
 
-    B = 1
+    B = 20
     best_err_1 = 1.5
     best_err_2 = 1.5
 
@@ -61,9 +61,9 @@ def run():
     X_fold2 = X[validation_samples]
 
     # Hyperparameter tuning for F and k
-    all_combinations = np.zeros((7, 20))
-    for F in range(8, 15):
-        k_list = list(range(10, 30))
+    all_combinations = np.zeros((10, 10))
+    for F in range(5, 15):
+        k_list = list(range(20, 30))
 
         for k in k_list:
             print "Current F and k: " + str(F) + " " + str(k)
@@ -83,12 +83,12 @@ def run():
             if err2 < best_err_2:
                 best_err_2 = err2
 
-            all_combinations[F - 8][k - 10] = (err1 + err2) / 2
+            all_combinations[F - 5][k - 20] = (err1 + err2) / 2
 
     # Retrieve the best F and k as the tuning result
     best_err = np.amin(all_combinations)
-    best_F = np.where(all_combinations == best_err)[0][0] + 8
-    best_k = np.where(all_combinations == best_err)[1][0] + 10
+    best_F = np.where(all_combinations == best_err)[0][0] + 5
+    best_k = np.where(all_combinations == best_err)[1][0] + 20
     print "Obtained result! best_F=" + str(best_F) + ", best_k=" + str(best_k)
 
     # Compute classification error for the best F and k
