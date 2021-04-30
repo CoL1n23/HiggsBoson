@@ -13,10 +13,15 @@ The project is to solve the Higgs Boson Machine Learning Challenge (https://www.
 - sklearn. Available at https://pypi.org/project/scikit-learn/
 
 ### How to use this project?
-- Run main.py in the ./sources folder
+- Run main.py in the ./sources folder with Python 2.7
+- Sample command:
 
-### Observation on testing
-- The generation for the second graph takes a relatively long time. It would take more than 10 seconds while we
+```
+python main.py
+```
+
+### Observations on testing
+- The generation for the second graph takes a relatively long time. It would take more than 20 seconds while we
 tested locally. If you don't want to wait, comment out that part of code.
 - The code which should be commented out is highlighted, if the above situation applies.
 
