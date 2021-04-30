@@ -14,7 +14,7 @@ def run():
     -----------------------------------------------------------------------------------------------
     """
     # Import data from source file from target directory
-    raw_data = pd.read_csv('./dataset/training.csv').values
+    raw_data = pd.read_csv('../dataset/training.csv').values
 
     # Select 1,000 samples from dataset
     data = raw_data[:2000, :]
