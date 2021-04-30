@@ -15,6 +15,9 @@ The project is to solve the Higgs Boson Machine Learning Challenge (https://www.
 ### How to use this project?
 - Run main.py in the ./sources folder
 
+### Observation on testing
+- The generation for the second graph takes a relatively long time. It would take more than 10 seconds while we
+tested locally. If you don't want to wait, comment out that part of code.
 
 Please contact us if you have any questions or comments about our project.
 - Lei Gong (gong148@purdue.edu)
