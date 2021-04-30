@@ -140,42 +140,37 @@ def run():
     # Figure 2
     alg = KNeighborsClassifier(n_neighbors=best_k, algorithm='brute')
     alg.fit(X, np.ravel(y))
-    fpr = np.zeros(22)
-    tpr = np.zeros(22)
+    sensitivity = np.zeros(1000)
+    specificity = np.zeros(1000)
 
-    positive_samples_test = list(np.where(y_test == 1)[0])
-    negative_samples_test = list(np.where(y_test == -1)[0])
-
-    P_label = list(np.where(y_test == 1))
-    P_label = np.asarray(P_label)
-    P_label = P_label.size
-    N_label = list(np.where(y_test == -1))
-    N_label = np.asarray(N_label)
-    N_label = N_label.size
-    for i in range(2, 30):
+    for i in range(1, 1000):
         alg = KNeighborsClassifier(n_neighbors=i, algorithm='brute')
         alg.fit(X, np.ravel(y))
-        probs = alg.predict(X_test)
+        y_pred = alg.predict(X_test)
         TP = 0
         FP = 0
+        FN = 0
+        TN = 0
         for j in range(0, len(y_test)):
-            if y_test[j] == 1 and probs[j] == 1:
-                TP = TP + 1
-            if y_test[j] == -1 and probs[j] == 1:
-                FP = FP + 1
-        fpr[i - 9] = FP * 1.0 / N_label
-        tpr[i - 9] = TP * 1.0 / P_label
-    fpr[0] = 0
-    fpr[21] = 1
-    tpr[0] = 0
-    tpr[21] = 1
-    print fpr, tpr
+            if y_test[j] == 1 and y_pred[j] == 1:
+                TP += 1
+            if y_test[j] == -1 and y_pred[j] == 1:
+                FP += 1
+            if y_test[j] == 1 and y_pred[j] == -1:
+                FN += 1
+            if y_test[j] == -1 and y_pred[j] == -1:
+                TN += 1
+        sensitivity[i] = float(TP) / (TP + FN)
+        specificity[i] = float(TN) / (TN + FP)
 
+    sensitivity[0] = 1
+    specificity[0] = 0
+    new_spe, new_sen = zip(*sorted(zip(specificity, sensitivity)))
     pp.figure(2)
-    pp.plot(fpr, tpr, color='orange', label='ROC')
-    pp.plot([0, 1], [0, 1], color='darkblue', linestyle='--')
-    pp.xlabel('False Positive Rate')
-    pp.ylabel('True Positive Rate')
+    pp.plot(new_spe, new_sen, color='magenta', label='K-Nearest Neighbors')
+    pp.plot([0, 1], [1, 0], color='blue', linestyle='--')
+    pp.xlabel('Specificity')
+    pp.ylabel('Sensitivity')
     pp.title('Receiver Operating Characteristic (ROC) Curve')
     pp.legend()
 
