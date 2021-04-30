@@ -139,7 +139,7 @@ def run():
 
     # ------------------------------------------
     # |                                        |
-    # | Comment start from here                |
+    # | Comment starts from here               |
     # |                                        |
     # ------------------------------------------
 
@@ -150,6 +150,9 @@ def run():
     sensitivity = np.zeros(1000)
     specificity = np.zeros(1000)
 
+    # Compute 1,000 data points
+    # Based on our result, the size of data points should be larger
+    # However, considering the computation power, we decided to set 1,000 as the size
     for k in range(1, 1000):
         alg = KNeighborsClassifier(n_neighbors=k, algorithm='brute')
         alg.fit(X, np.ravel(y))
