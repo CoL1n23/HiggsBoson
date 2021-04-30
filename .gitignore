@@ -6,3 +6,4 @@ HiggsBosonCompetition_AMSMetric_rev1.py
 random_submission.csv
 test.csv
 training.csv
+sources/*.pyc
