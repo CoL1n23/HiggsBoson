@@ -6,11 +6,15 @@
 
 The project is to solve the Higgs Boson Machine Learning Challenge (https://www.kaggle.com/c/higgs-boson).
 
-### Checklist
-- [x] Data preprocessing
-- [ ] Hyperparameter tuning
-- [ ] PCA
-- [ ] Generating figures
+### External libraries
+- matplotlib. Available at https://pypi.org/project/matplotlib/
+- numpy. Available at https://pypi.org/project/numpy/
+- panda. Available at https://pypi.org/project/pandas/
+- sklearn. Available at https://pypi.org/project/scikit-learn/
+
+### How to use this project?
+- Run main.py in the ./sources folder
+
 
 Please contact us if you have any questions or comments about our project.
 - Lei Gong (gong148@purdue.edu)
