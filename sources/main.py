@@ -17,7 +17,7 @@ def run():
     raw_data = pd.read_csv('../dataset/training.csv').values
 
     # Select 1,000 samples from dataset
-    data = raw_data[:2000, :]
+    data = raw_data[:1500, :]
     n, d = data.shape
 
     """
@@ -42,9 +42,6 @@ def run():
     X = X[:1000]
     y_test = y[1000:, :]
     y = y[:1000]
-
-    positive_samples_test = list(np.where(y_test == 1)[0])
-    negative_samples_test = list(np.where(y_test == -1)[0])
 
     """
     -----------------------------------------------------------------------------------------------
@@ -118,7 +115,7 @@ def run():
     print "Classification Error:" + str(err)
     desired1 = float(len(positive_samples)) / len(X)
     desired2 = float(len(negative_samples)) / len(X)
-    print "Desired classification error=" + str(min(desired1, desired2))
+    print "Threshold of classification error=" + str(min(desired1, desired2))
     if err < min(desired1, desired2):
         print "Congrats! The training is successful!"
     else:
@@ -129,7 +126,7 @@ def run():
     GRAPH DRAWING
     -----------------------------------------------------------------------------------------------
     """
-    # Figure #1
+    # Figure 1
     pp.figure(1)
     horizontal = range(5, 15)
     vertical = range(10, 20)
@@ -140,11 +137,15 @@ def run():
     pp.xlabel("F: number of features after applying PCA")
     pp.ylabel("k: the k-th nearest neighbor")
 
-    # Figure #2
+    # Figure 2
     alg = KNeighborsClassifier(n_neighbors=best_k, algorithm='brute')
     alg.fit(X, np.ravel(y))
     fpr = np.zeros(22)
     tpr = np.zeros(22)
+
+    positive_samples_test = list(np.where(y_test == 1)[0])
+    negative_samples_test = list(np.where(y_test == -1)[0])
+
     P_label = list(np.where(y_test == 1))
     P_label = np.asarray(P_label)
     P_label = P_label.size
