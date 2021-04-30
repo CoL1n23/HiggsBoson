@@ -53,15 +53,15 @@ def run():
     negative_samples = list(np.where(y == -1)[0])
 
     # Separate positive and negative samples to create training and validation sets
-    train_samples = positive_samples[:len(positive_samples)/2] + negative_samples[:len(negative_samples)/2]
-    validation_samples = positive_samples[len(positive_samples)/2:] + negative_samples[len(negative_samples)/2:]
+    samples_in_fold1 = positive_samples[:len(positive_samples)/2] + negative_samples[:len(negative_samples)/2]
+    samples_in_fold2 = positive_samples[len(positive_samples)/2:] + negative_samples[len(negative_samples)/2:]
 
     B = 30
     best_err_1 = 1.5
     best_err_2 = 1.5
 
-    X_fold1 = X[train_samples]
-    X_fold2 = X[validation_samples]
+    X_fold1 = X[samples_in_fold1]
+    X_fold2 = X[samples_in_fold2]
 
     # Hyperparameter tuning for F and k
     all_combinations = np.zeros((10, 10))
@@ -76,11 +76,11 @@ def run():
             X_fold2_small = pcaproj.run(X_fold2, mu_fold2, Z_fold2)
 
             # Evaluate errors by running bootstrapping on KNeighborsClassifier
-            err1 = bootstrapping.run(B, X_fold1_small, y[train_samples], k)
+            err1 = bootstrapping.run(B, X_fold1_small, y[samples_in_fold1], k)
             if err1 < best_err_1:
                 best_err_1 = err1
 
-            err2 = bootstrapping.run(B, X_fold2_small, y[validation_samples], k)
+            err2 = bootstrapping.run(B, X_fold2_small, y[samples_in_fold2], k)
             if err2 < best_err_2:
                 best_err_2 = err2
 
@@ -99,16 +99,16 @@ def run():
     X_fold2_small = pcaproj.run(X_fold2, mu_fold1, Z_fold1)
 
     alg = KNeighborsClassifier(n_neighbors=best_k, algorithm='brute')
-    alg.fit(X_fold1_small, np.ravel(y[train_samples]))
-    y_pred[validation_samples] = alg.predict(X_fold2_small)
+    alg.fit(X_fold1_small, np.ravel(y[samples_in_fold1]))
+    y_pred[samples_in_fold2] = alg.predict(X_fold2_small)
 
     mu_fold2, Z_fold2 = pcalearn.run(best_F, X_fold2)
     X_fold1_small = pcaproj.run(X_fold1, mu_fold2, Z_fold2)
     X_fold2_small = pcaproj.run(X_fold2, mu_fold2, Z_fold2)
 
     alg = KNeighborsClassifier(n_neighbors=best_k, algorithm='brute')
-    alg.fit(X_fold2_small, np.ravel(y[validation_samples]))
-    y_pred[train_samples] = alg.predict(X_fold1_small)
+    alg.fit(X_fold2_small, np.ravel(y[samples_in_fold2]))
+    y_pred[samples_in_fold1] = alg.predict(X_fold1_small)
 
     err = np.mean(y != np.array([y_pred]).T)
 
@@ -137,14 +137,21 @@ def run():
     pp.xlabel("F: number of features after applying PCA")
     pp.ylabel("k: the k-th nearest neighbor")
 
+    # ------------------------------------------
+    # |                                        |
+    # | Comment start from here                |
+    # |                                        |
+    # ------------------------------------------
+
+    # Comment out the code below will expedite the execution
     # Figure 2
     alg = KNeighborsClassifier(n_neighbors=best_k, algorithm='brute')
     alg.fit(X, np.ravel(y))
     sensitivity = np.zeros(1000)
     specificity = np.zeros(1000)
 
-    for i in range(1, 1000):
-        alg = KNeighborsClassifier(n_neighbors=i, algorithm='brute')
+    for k in range(1, 1000):
+        alg = KNeighborsClassifier(n_neighbors=k, algorithm='brute')
         alg.fit(X, np.ravel(y))
         y_pred = alg.predict(X_test)
         TP = 0
@@ -160,8 +167,8 @@ def run():
                 FN += 1
             if y_test[j] == -1 and y_pred[j] == -1:
                 TN += 1
-        sensitivity[i] = float(TP) / (TP + FN)
-        specificity[i] = float(TN) / (TN + FP)
+        sensitivity[k] = float(TP) / (TP + FN)
+        specificity[k] = float(TN) / (TN + FP)
 
     sensitivity[0] = 1
     specificity[0] = 0
@@ -173,6 +180,12 @@ def run():
     pp.ylabel('Sensitivity')
     pp.title('Receiver Operating Characteristic (ROC) Curve')
     pp.legend()
+
+    # ------------------------------------------
+    # |                                        |
+    # | Comment ends here                      |
+    # |                                        |
+    # ------------------------------------------
 
     pp.show()
 
