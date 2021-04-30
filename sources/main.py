@@ -129,7 +129,7 @@ def run():
     # Figure 1
     pp.figure(1)
     horizontal = range(5, 15)
-    vertical = range(10, 20)
+    vertical = range(20, 30)
     values = all_combinations
     cp = pp.contourf(horizontal, vertical, values, cmap='YlOrRd')
     pp.colorbar(cp)
@@ -173,9 +173,14 @@ def run():
         sensitivity[k] = float(TP) / (TP + FN)
         specificity[k] = float(TN) / (TN + FP)
 
+    # Manually insert one point
+    # Since the number of data points is not large enough, add this point to simulate the plot
     sensitivity[0] = 1
     specificity[0] = 0
+
+    # Sort x and y for better presentation
     new_spe, new_sen = zip(*sorted(zip(specificity, sensitivity)))
+
     pp.figure(2)
     pp.plot(new_spe, new_sen, color='magenta', label='K-Nearest Neighbors')
     pp.plot([0, 1], [1, 0], color='blue', linestyle='--')
