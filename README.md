@@ -9,7 +9,7 @@ The project is to solve the Higgs Boson Machine Learning Challenge (https://www.
 ### External libraries
 - matplotlib. Available at https://pypi.org/project/matplotlib/
 - numpy. Available at https://pypi.org/project/numpy/
-- panda. Available at https://pypi.org/project/pandas/
+- pandas. Available at https://pypi.org/project/pandas/
 - sklearn. Available at https://pypi.org/project/scikit-learn/
 
 ### How to use this project?
@@ -21,6 +21,7 @@ python main.py
 ```
 
 ### Observations on testing
+- If it's the first time running this script, it might take a while for the program to compile. Please be patient.
 - The generation for the second graph takes a relatively long time. It would take more than 20 seconds while we
 tested locally. If you don't want to wait, comment out that part of code.
 - The code which should be commented out is highlighted, if the above situation applies.
